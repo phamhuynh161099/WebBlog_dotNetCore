@@ -1,0 +1,17 @@
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Application\bin\Debug\net5.0\SakataBlog.Application.deps.json
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Application\bin\Debug\net5.0\SakataBlog.Application.dll
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Application\bin\Debug\net5.0\ref\SakataBlog.Application.dll
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Application\bin\Debug\net5.0\SakataBlog.Application.pdb
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Application\bin\Debug\net5.0\SakataBlog.Data.dll
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Application\bin\Debug\net5.0\SakataBlog.ViewModel.dll
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Application\bin\Debug\net5.0\SakataBlog.Data.pdb
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Application\bin\Debug\net5.0\SakataBlog.ViewModel.pdb
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Application\obj\Debug\net5.0\SakataBlog.Application.csproj.AssemblyReference.cache
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Application\obj\Debug\net5.0\SakataBlog.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Application\obj\Debug\net5.0\SakataBlog.Application.AssemblyInfoInputs.cache
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Application\obj\Debug\net5.0\SakataBlog.Application.AssemblyInfo.cs
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Application\obj\Debug\net5.0\SakataBlog.Application.csproj.CoreCompileInputs.cache
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Application\obj\Debug\net5.0\SakataBlog.Application.csproj.CopyComplete
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Application\obj\Debug\net5.0\SakataBlog.Application.dll
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Application\obj\Debug\net5.0\ref\SakataBlog.Application.dll
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Application\obj\Debug\net5.0\SakataBlog.Application.pdb

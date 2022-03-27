@@ -1,0 +1,113 @@
+﻿@model SakataBlog.ViewModel.System.UserFolder.UserVm
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var Roles = ViewBag.RoleSelect as List<SakataBlog.ViewModel.Common.SelectItem>;
+}
+
+@section Links{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+}
+
+@section Styles{
+    <link href="~/cus-css/PostCreate.css" rel="stylesheet" />
+}
+
+@section Scripts{
+
+    <!-- Cdn Sweet Alert -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Cdn Select2-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            //Add attr select2 for TagSelect
+            $('.select2').select2({
+                closeOnSelect: false
+            });
+
+            //show image befor upload to server
+            $("#AvatarImage").change(function () {
+                var file = $(this)[0].files[0];
+                console.log(file.type);
+                var patterImage = new RegExp("image/*");
+                if (!patterImage.test(file.type)) {
+                    alert("Please choose image");
+                } else {
+                    var fileReader = new FileReader();
+                    fileReader.readAsDataURL(file);
+                    fileReader.onload = function (e) {
+                        $("#ShowAvatarImage").attr("src", e.target.result);
+                    }
+                }
+            });
+
+            //Test for edit
+
+        });
+    </script>
+}
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Create User</h6>
+            </div>
+            <div class="card-body">
+                <form action="/user/update/@Model.Id " enctype="multipart/form-data" method="Post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label class="cus-text-label" for="FirstName">First Name</label>
+                        <input name="FirstName" id="FirstName" value="@Model.FirstName" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="cus-text-label" for="LastName">Last Name</label>
+                        <input name="LastName" id="LastName" value="@Model.LastName" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="cus-text-label" for="Password">Password</label>
+                        <input type="password" name="Password" id="Password" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="cus-text-label" for="Dob">Dob</label>
+                        <input type="date" name="Dob" value="@Model.Dob.ToString("yyyy-MM-dd")" id="Dob" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="cus-text-label" for="AvatarImage">Avatar Image</label>
+                        <input class="form-control form-control-lg" name="AvatarImage" id="AvatarImage" type="file" />
+                        <img src="@Model.AvatarImage" alt="@Model.AvatarImage" id="ShowAvatarImage" class="img-thumbnail mt-2 cus-image-featurer">
+                    </div>
+                    <div class="form-group">
+                        <label class="cus-text-label" for="Roles">Roles</label>
+                        <select id="Roles" class="form-control select2 select2-hidden-accessible" name="Roles" multiple="" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                            @foreach (var role in Roles)
+                            {
+                                if (role.Selected == true)
+                                {
+                                    <option value="@role.Id" selected>@role.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@role.Id">@role.Name</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Update" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

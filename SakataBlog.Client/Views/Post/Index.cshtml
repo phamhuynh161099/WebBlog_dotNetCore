@@ -1,0 +1,49 @@
+﻿@*@model List<SakataBlog.ViewModel.Catalog.PostFolder.PostVm>*@
+@using SakataBlog.ViewModel.Common
+@model PagingResult<SakataBlog.ViewModel.Catalog.PostFolder.PostVm>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Header{
+    <header class="masthead" style="background-image: url('/img/home-bg.jpg')">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <div class="site-heading">
+                        <h1>Clean Blog</h1>
+                        <span class="subheading">A Blog Theme by Start Bootstrap</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+}
+
+<div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+        @foreach (var post in @Model.items)
+        {
+            <div class="post-preview">
+                <a href="/post/detail/@post.Id">
+                    <h2 class="post-title">
+                        @Html.Raw(post.Title)
+                    </h2>
+                    <h3 class="post-subtitle">
+                        @Html.Raw(post.ShortDesc)
+                    </h3>
+                </a>
+                <p class="post-meta">
+                    Posted by
+                    <a href="#">@post.CreatedBy</a>on
+                    <br />
+                    @post.CreatedAt.ToString("dd-MM-yyyy")
+                </p>
+            </div>
+            <hr>
+        }
+        @await Component.InvokeAsync("Pager", Model)
+    </div>
+</div>

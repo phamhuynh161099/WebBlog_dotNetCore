@@ -1,0 +1,88 @@
+﻿@model SakataBlog.ViewModel.System.RoleFolder.RoleVm
+@{
+    ViewData["Title"] = "AssignPermission";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var Permission = ViewBag.PermissionSelect as List<SakataBlog.ViewModel.Common.SelectItem>;
+
+}
+
+<h1>RoleAssignPermission</h1>
+<div class="row">
+    <form action="/Role/Update/@Model.Id" method="post">
+        <div class="form-group">
+            <label class="cus-text-label" for="name">Name</label>
+            <input type="text" name="name" id="name" value="@Model.Name" class="form-control" />
+        </div>
+        @foreach (var GroupKey in Permission.GroupBy(x => x.Value))
+        {
+
+            <div class="col-lg-9">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">@GroupKey.Key</h6>
+                    </div>
+                    <div class="card-body">
+                        @foreach (var item in GroupKey)
+                        {
+
+                            <div class="col-lg-3 form-check-inline">
+                                @if (item.Selected == true)
+                                {
+                                    <input class="form-check-input" name="permissions" type="checkbox" checked id="@item.Id" value="@item.Id">
+                                }
+                                else
+                                {
+                                    <input class="form-check-input" name="permissions" type="checkbox" id="@item.Id" value="@item.Id">
+                                }
+                                <label class="form-check-label" for="@item.Id">@item.Name</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    @*<div class="col-lg-9">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Category</h6>
+                </div>
+                <div class="card-body">
+                    <div class="col-lg-3 form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                        <label class="form-check-label" for="inlineCheckbox1">1</label>
+                    </div>
+
+                    <div class="col-lg-3 form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                        <label class="form-check-label" for="inlineCheckbox1">1</label>
+                    </div>
+
+                    <div class="col-lg-3 form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                        <label class="form-check-label" for="inlineCheckbox1">1</label>
+                    </div>
+
+                    <div class="col-lg-3 form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                        <label class="form-check-label" for="inlineCheckbox1">1</label>
+                    </div>
+
+                    <div class="col-lg-3 form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                        <label class="form-check-label" for="inlineCheckbox1">1</label>
+                    </div>
+
+                    <div class="col-lg-3 form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                        <label class="form-check-label" for="inlineCheckbox1">1</label>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+</div>

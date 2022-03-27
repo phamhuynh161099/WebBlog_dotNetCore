@@ -1,0 +1,499 @@
+﻿@model List<SakataBlog.ViewModel.Catalog.CategoryFolder.CategoryVm>
+@{
+    ViewData["Title"] = "Index";
+    ViewData["Description"] = "Category CRUD";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Links{
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!-- Cdn Sweet Alert -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}
+@section Scripts{
+    <!-- Page level plugins -->
+    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
+}
+
+<h1>Index</h1>
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <button class="btn btn-primary m-0" id="create-new-category">Create New Category</button>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Seo Meta</th>
+                        <th>Create At</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Seo Meta</th>
+                        <th>Create At</th>
+                        <th>Action</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th>@item.Id</th>
+                            <th>@item.CategoryName</th>
+                            <th>@item.SeoMeta</th>
+                            <th>@item.CreatedAt.ToString("dd/MM/yyyy")</th>
+                            <th>
+                                <button class="btn btn-light mr-2 btnDetail" data-id="@item.Id">Detail</button>
+                                @if (item.IsShowOnHome == false)
+                                {
+                                    <button class="btn btn-primary mr-2 btnRestore" data-id="@item.Id">Restore</button>
+                                    <button class="btn btn-danger mr-2 btnDestroy" data-id="@item.Id">Destroy</button>
+
+                                }
+                                else
+                                {
+                                    <button class="btn btn-primary mr-2 btnEdit" data-id="@item.Id">Edit</button>
+                                    <button class="btn btn-warning mr-2 btnDelete" data-id="@item.Id">Delete</button>
+                                }
+                            </th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Dialog -->
+<div class="modal fade bd-example-modal-xl" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="false">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8 mx-auto">
+                        <form class="">
+                            <input type="hidden" id="CategoryId" value="" />
+                            <div class="form-group">
+                                <label class="control-label">Parent Id</label>
+                                <input name="ParentId" id="ParentId" value="" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Category Name</label>
+                                <input name="CategoryName" id="CategoryName" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Seo Meta</label>
+                                <input name="SeoMeta" id="SeoMeta" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <input type="button" id="btnSubmit" value="Create" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal Dialog -->
+<!-- Modal Dialog Show Detail -->
+<div class="modal fade bd-example-modal" id="modalDialogDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="false">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleDetail"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 mx-auto">
+                        <dl class="row">
+                            <dt class="col-sm-4">
+                                Id
+                            </dt>
+                            <dd class="col-sm-8" id="CategoryId">
+                            </dd>
+                            <dt class="col-sm-4">
+                                Name
+                            </dt>
+                            <dd class="col-sm-8" id="CategoryName">
+                            </dd>
+                            <dt class="col-sm-4">
+                                Parent Id
+                            </dt>
+                            <dd class="col-sm-8" id="ParentId">
+                            </dd>
+                            <dt class="col-sm-4">
+                                Seo Meta
+                            </dt>
+                            <dd class="col-sm-8" id="SeoMeta">
+                            </dd>
+                            <dt class="col-sm-4">
+                                Create At
+                            </dt>
+                            <dd class="col-sm-8" id="CreatedAt">
+                            </dd>
+                            <dt class="col-sm-4">
+                                Updatde At
+                            </dt>
+                            <dd class="col-sm-8" id="UpdatedAt">
+                            </dd>
+                            <dt class="col-sm-4">
+                                Deleted At
+                            </dt>
+                            <dd class="col-sm-8" id="DeletedAt">
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Dialog -->
+
+<script>
+    $(document).ready(function () {
+
+        $('#dataTable').DataTable({
+            "order": [[0, 'desc']]
+        });
+        //Pop-up Modal
+        $("#create-new-category").click(function () {
+            $("#modalTitle").text("Create New Category");
+            $("#btnSubmit").val("Create");
+            $("#modalDialog").modal();
+
+            console.log("cookie: ", getCookie("_tokenLogin"));
+        });
+
+        //btnSubmit Clicked
+        $("#btnSubmit").click(function () {
+            var typeSumbit = $("#btnSubmit").val();
+            if (typeSumbit == "Create") {
+                CreateCategory();
+            } else if (typeSumbit == "Update") {
+                UpdateCategory();
+            }
+
+        });
+
+        //btnEdit Clicked
+        $("body").delegate(".btnEdit", 'click', function () {
+            var _id = parseInt($(this).attr("data-id"));
+            $.ajax({
+                type: "POST",
+                url: '/Category/Detail',
+                data: {
+                    id: _id,
+                },
+                success: function (res) {
+                    if (res.isSuccessed == true) {
+                        $("#modalTitle").text("Update Category");
+                        $("#btnSubmit").val("Update");
+
+                        $("#CategoryId").val(res.dataResult.id);
+                        $("#ParentId").val(res.dataResult.parentId);
+                        $("#CategoryName").val(res.dataResult.categoryName);
+                        $("#SeoMeta").val(res.dataResult.seoMeta);
+
+                        $("#modalDialog").modal();
+                    }
+                },
+                error: function (err) {
+                    console.log("error");
+                }
+            });
+        });
+
+        //btnDelete Clicked
+        $("body").delegate(".btnDelete", 'click', function () {
+            var _id = $(this).attr("data-id");
+
+            Swal.fire({
+                title: 'Do you want to Delete the Category?',
+
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Category/Delete',
+                        data: {
+                            id: _id,
+                        },
+                        success: function (res) {
+                            if (res.isSuccessed == true) {
+                                ShowAlert(res.message);
+                            } else {
+                                ShowAlert(res.message);
+                            }
+                        },
+                        error: function (err) {
+                            if (err.status === 403) {
+                                ShowAlert("Ban Khong Co Quyen Truy Cap")
+                            } else {
+                                ShowAlert("Loi")
+                            }
+                            console.log("error");
+                        }
+                    });
+                }
+            })
+
+        })
+
+        //btnDestroy Clicked
+        $("body").delegate(".btnDestroy", 'click', function () {
+            var _id = $(this).attr("data-id");
+
+            Swal.fire({
+                title: 'Do you want to Destroy the Category?',
+
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Category/Destroy',
+                        data: {
+                            id: _id,
+                        },
+                        success: function (res) {
+                            if (res.isSuccessed == true) {
+                                ShowAlert(res.message);
+                            } else {
+                                ShowAlert(res.message);
+                            }
+                        },
+                        error: function (err) {
+                            if (err.status === 403) {
+                                ShowAlert("Ban Khong Co Quyen Truy Cap")
+                            } else {
+                                ShowAlert("Loi")
+                            }
+                            console.log("error");
+                        }
+                    });
+                }
+            })
+
+        })
+
+        //btnRestore Clicked
+        $("body").delegate(".btnRestore", 'click', function () {
+            var _id = $(this).attr("data-id");
+
+            Swal.fire({
+                title: 'Do you want to Restore the Category?',
+
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Category/Restore',
+                        data: {
+                            id: _id,
+                        },
+                        success: function (res) {
+                            if (res.isSuccessed == true) {
+                                ShowAlert(res.message);
+                            } else {
+                                ShowAlert(res.message);
+                            }
+                        },
+                        error: function (err) {
+                            if (err.status === 403) {
+                                ShowAlert("Ban Khong Co Quyen Truy Cap")
+                            } else {
+                                ShowAlert("Loi")
+                            }
+                            console.log("error");
+                        }
+                    });
+                }
+            })
+
+        })
+
+        //btnDetail Clicked
+        $("body").delegate(".btnDetail", 'click', function () {
+            $("#modalDialogDetail").modal();
+            $("#modalTitleDetail").text("Create New Category");
+            var _id = parseInt($(this).attr("data-id"));
+            $.ajax({
+                type: "POST",
+                url: '/Category/Detail',
+                data: {
+                    id: _id,
+                },
+                success: function (res) {
+                    if (res.isSuccessed == true) {
+                        $("dd#CategoryId").text(res.dataResult.id);
+                        $("dd#CategoryName").text(res.dataResult.categoryName);
+                        $("dd#ParentId").text(res.dataResult.parentId);
+                        $("dd#SeoMeta").text(res.dataResult.seoMeta);
+
+                        $("dd#CreatedAt").text(ConvertDatatime(res.dataResult.createdAt));
+                        $("dd#DeletedAt").text(ConvertDatatime(res.dataResult.deletedAt));
+                        $("dd#UpdatedAt").text(ConvertDatatime(res.dataResult.updatedAt));
+                    }
+                },
+                error: function (err) {
+                    if (err.status === 403) {
+                        ShowAlert("Ban Khong Co Quyen Truy Cap")
+                    } else {
+                        ShowAlert("Loi")
+                    }
+                    console.log("error");
+                }
+            });
+        })
+
+        //funcation to Show Alert Success or Error
+        function ShowAlert(Message) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: Message,
+                showConfirmButton: false,
+                timer: 1500
+            });
+
+            setTimeout(function () {
+                location.reload();
+            }, 1500);
+        }
+
+        //funcation to use Ajax Post Create New Categoty
+        function CreateCategory() {
+            var formData = new FormData();
+            formData.append('ParentId', $("#ParentId").val());
+            formData.append('SeoMeta', $("#SeoMeta").val());
+            formData.append('CategoryName', $("#CategoryName").val());
+
+            console.log($("#SeoMeta").val());
+
+            $.ajax({
+                type: "POST",
+                url: '/Category/Create',
+                data: formData,
+                contentType: false,
+                dataType: 'json',
+                processData: false,
+                cache: false,
+                success: function (res) {
+                    if (res.isSuccessed == true) {
+                        ShowAlert(res.message);
+                    } else {
+                        ShowAlert(res.message);
+                    }
+                },
+                error: function (err) {
+                    console.log("error");
+                    if (err.status === 403) {
+                        ShowAlert("Ban Khong Co Quyen Truy Cap")
+                    } else {
+                        ShowAlert("Loi")
+                    }
+                }
+            });
+        }
+
+        //funcation to use Ajax Post Update Categoty
+        function UpdateCategory() {
+            var formData = new FormData();
+            formData.append('Id', $("#CategoryId").val());
+            formData.append('ParentId', $("#ParentId").val());
+            formData.append('SeoMeta', $("#SeoMeta").val());
+            formData.append('CategoryName', $("#CategoryName").val());
+
+            console.log($("#SeoMeta").val());
+
+            $.ajax({
+                type: "POST",
+                url: '/Category/Update',
+                data: formData,
+                contentType: false,
+                dataType: 'json',
+                processData: false,
+                cache: false,
+                success: function (res) {
+                    if (res.isSuccessed == true) {
+                        ShowAlert(res.message);
+                    } else {
+                        ShowAlert(res.message);
+                    }
+                },
+                error: function (err) {
+                    if (err.status === 403) {
+                        ShowAlert("Ban Khong Co Quyen Truy Cap")
+                    } else {
+                        ShowAlert("Loi")
+                    }
+                    console.log("error");
+                }
+            });
+        }
+
+        //funcation convert string to datatime
+        function ConvertDatatime(dataTimeInp) {
+            let dateString = dataTimeInp
+                , reggie = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/
+                , [, year, month, day, hours, minutes, seconds] = reggie.exec(dateString)
+                , dateObject = new Date(year, month - 1, day, hours, minutes, seconds);
+            if (dateString.substr(0, 3) == "000") return "";
+            return dateObject.toDateString()
+        }
+
+        //get cookie
+        function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+    })
+</script>

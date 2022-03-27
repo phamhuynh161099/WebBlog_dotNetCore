@@ -1,0 +1,210 @@
+﻿@model List<SakataBlog.ViewModel.Catalog.PostFolder.PostVm>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Description"] = "Post CRUD";
+}
+
+@section Links{
+    <!-- Custom styles for this page -->
+    <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!-- Cdn Sweet Alert -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}
+@section Scripts{
+    <!-- Page level plugins -->
+    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="/js/demo/datatables-demo.js"></script>
+}
+
+<h1>Index</h1>
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <a class="btn btn-primary m-0" asp-controller="Post" asp-action="Create">Create New Post</a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th style="width:20%">Title</th>
+                        <th>Seo Meta</th>
+                        <th style="width:15%">Created At</th>
+                        <th style="width:15%">Created By</th>
+                        <th style="width:10%">Action</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Id</th>
+                        <th>Title</th>
+                        <th>Seo Meta</th>
+                        <th>Created At</th>
+                        <th>Created By</th>
+                        <th>Action</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th>@item.Id</th>
+                            <th>@Html.Raw(item.Title)</th>
+                            <th>@item.SeoMeta</th>
+                            <th>@item.CreatedAt.ToString("dd/MM/yyyy")</th>
+                            <th>@item.CreatedBy</th>
+                            <th>
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Action
+                                    </button>
+                                    <div class="dropdown-menu" style="cursor:pointer" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item">Another action</a>
+                                        <a class="dropdown-item">Something else here</a>
+
+                                        @if (item.IsShowOnHome == false)
+                                        {
+                                            <a class="dropdown-item btnRestore" data-id="@item.Id">Restore</a>
+                                            <a class="dropdown-item btnDestroy" data-id="@item.Id">Destroy</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="dropdown-item" href="/Post/Update/@item.Id">Edit</a>
+                                            <a class="dropdown-item btnDelete" data-id="@item.Id">Delete</a>
+                                        }
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        //Destroy Clicked
+        $("body").delegate(".btnDestroy", 'click', function () {
+            var _id = $(this).attr("data-id");
+
+            Swal.fire({
+                title: 'Do you want to Destroy the Post?',
+
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Post/Destroy',
+                        data: {
+                            id: _id,
+                        },
+                        success: function (res) {
+                            if (res.isSuccessed == true) {
+                                ShowAlert("Destroy Post " + res.message);
+                            } else {
+                                ShowAlert("Destroy Post " + res.message);
+                            }
+                        },
+                        error: function (err) {
+                            console.log("error");
+                        }
+                    });
+                }
+            })
+        });
+
+        //btnRestore Clicked
+        $("body").delegate(".btnRestore", 'click', function () {
+            var _id = $(this).attr("data-id");
+
+            Swal.fire({
+                title: 'Do you want to Restore the Tag?',
+
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Post/Restore',
+                        data: {
+                            id: _id,
+                        },
+                        success: function (res) {
+                            if (res.isSuccessed == true) {
+                                ShowAlert(res.message);
+                            } else {
+                                ShowAlert(res.message);
+                            }
+                        },
+                        error: function (err) {
+                            console.log("error");
+                        }
+                    });
+                }
+            })
+
+        })
+
+        //Destroy Clicked
+        $("body").delegate(".btnDelete", 'click', function () {
+            var _id = $(this).attr("data-id");
+
+            Swal.fire({
+                title: 'Do you want to Delete the Post?',
+
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Post/Delete',
+                        data: {
+                            id: _id,
+                        },
+                        success: function (res) {
+                            if (res.isSuccessed == true) {
+                                ShowAlert("Delete Post " + res.message);
+                            } else {
+                                ShowAlert("Delete Post " + res.message);
+                            }
+                        },
+                        error: function (err) {
+                            console.log("error");
+                        }
+                    });
+                }
+            })
+        });
+
+        //funcation to Show Alert Success or Error
+        function ShowAlert(Message) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: Message,
+                showConfirmButton: false,
+                timer: 1500
+            });
+
+            setTimeout(function () {
+                location.reload();
+            }, 1500);
+        }
+    })
+</script>

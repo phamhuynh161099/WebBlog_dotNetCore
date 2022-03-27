@@ -1,0 +1,336 @@
+﻿@{
+    ViewData["Title"] = "Update Post";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var Categories = ViewBag.CategoriesSelect as List<SakataBlog.ViewModel.Common.SelectItem>;
+    var Tags = ViewBag.TagsSelect as List<SakataBlog.ViewModel.Common.SelectItem>;
+
+}
+@model SakataBlog.ViewModel.Catalog.PostFolder.PostVm
+
+@section Links{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+}
+
+@section Styles{
+    <link href="~/cus-css/PostCreate.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/lib/jqueryui/themes/base/theme.css" />
+    <link rel="stylesheet" href="~/lib/jqueryui/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="~/lib/elfinder/css/elfinder.full.css" />
+    <link rel="stylesheet" href="~/lib/elfinder/css/theme.min.css" />
+}
+
+@section Scripts{
+
+    <!-- Cdn Sweet Alert -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Cdn Select2-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+    <!-- Cdn,lib For Elfinder -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jqueryui/jquery-ui.min.js"></script>
+    <script src="~/lib/elfinder/js/elfinder.min.js"></script>
+
+    <script src="@Url.Content("~/summernote-0.8.18-dist/summernote-bs4.js")"></script>
+    <link href="@Url.Content("~/summernote-0.8.18-dist/summernote-bs4.min.css")" rel="stylesheet">
+
+    <!-- Cac Ham Ve Gui Ajax Category Tag.... -->
+    <script src="~/cus-js/PostCreate.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            //Add attr select2 for TagSelect
+            $('.select2').select2({
+                closeOnSelect: false
+            });
+
+            //show image befor upload to server
+            $("#ImageFeature").change(function () {
+                var file = $(this)[0].files[0];
+                console.log(file.type);
+                var patterImage = new RegExp("image/*");
+                if (!patterImage.test(file.type)) {
+                    alert("Please choose image");
+                } else {
+                    var fileReader = new FileReader();
+                    fileReader.readAsDataURL(file);
+                    fileReader.onload = function (e) {
+                        $("#ShowImageFeature").attr("src", e.target.result);
+                    }
+                }
+            });
+
+            //Test for edit
+
+        });
+    </script>
+
+    <script>
+        //Khoi Tao ElFinder
+        (function (factory) {
+            if (typeof define === 'function' && define.amd) {
+                define(['jquery'], factory);
+            }
+            else if (typeof module === 'object' && module.exports) {
+                module.exports = factory(require('jquery'));
+            } else {
+                factory(window.jQuery);
+            }
+        }(function ($) {
+            $.extend($.summernote.plugins, {
+                // Tạo plugin tên elfinder
+                'elfinder': function (context) {
+                    var self = this;
+                    // ui has renders to build ui elements.
+                    var ui = $.summernote.ui;
+                    // Tạo nút bấm
+                    context.memo('button.elfinder', function () {
+                        var button = ui.button({
+                            contents: '<i class="note-icon-picture" /> elFinder',
+                            tooltip: 'Quản lý file',
+                            click: function () {
+                                // Bấm vào nút bấm gọi hàm elfinderDialog
+                                elfinderDialog(context);
+                            }
+                        });
+                        // create jQuery object from button instance.
+                        var $elfinder = button.render();
+                        return $elfinder;
+                    });
+                    // This methods will be called when editor is destroyed by $('..').summernote('destroy');
+                    // You should remove elements on `initialize`.
+                    this.destroy = function () {
+                        this.$panel.remove();
+                        this.$panel = null;
+                    };
+                }
+
+            });
+        }));
+
+        //Hien Thi Dialog ElFinder
+        function elfinderDialog(editor) {
+
+            var fm = $('<div />').dialogelfinder({
+                url: '/el-finder-file-system/connector', // change with the url of your connector
+                baseUrl: "/lib/elfinder/",
+                lang: 'vi',
+                width: 840,
+                height: 450,
+                destroyOnClose: true,
+                getFileCallback: function (files, fm) {
+                    console.log(files);
+                    editor.invoke('editor.insertImage', files.url);
+                },
+                commandsOptions: {
+                    getfile: {
+                        oncomplete: 'close',
+                        folders: false
+                    }
+                }
+            }).dialogelfinder('instance');
+        }
+
+        //Khoi tao cac Summernote
+        $(document).ready(function () {
+            $("#SummernoteContent").summernote({
+                height: 600,
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video', 'elfinder']],
+                    ['view', ['fullscreen', 'codeview', 'help']],
+                ]
+            });
+            $("#SummernoteShortDesc").summernote({
+                height: 300,
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video', 'elfinder']],
+                    ['view', ['fullscreen', 'codeview', 'help']],
+                ]
+            });
+            $("#SummernoteSeoMeta").summernote({
+                height: 200,
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video', 'elfinder']],
+                    ['view', ['fullscreen', 'codeview', 'help']],
+                ]
+            });
+            $("#SummernoteTitle").summernote({
+                height: 200,
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video', 'elfinder']],
+                    ['view', ['fullscreen', 'codeview', 'help']],
+                ]
+            });
+        });
+    </script>
+}
+
+<div class="row">
+    <!--Form Create Post -->
+    <div class="col-lg-8">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Create Post</h6>
+            </div>
+            <div class="card-body">
+                @*asp-action="update"*@
+                <form enctype="multipart/form-data" action="/post/update/@Model.Id" method="Post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label class="cus-text-label" for="Title">Title</label>
+                        <textarea class="form-control" name="Title" id="SummernoteTitle">@Model.Title</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="cus-text-label" for="CategoriesSelect">Category</label>
+                        <select class="form-control" name="CategoryId" id="CategoriesSelect">
+                            <option value="0">Select Category</option>
+                            @foreach (var category in Categories)
+                            {
+                                if (category.Selected == true)
+                                {
+                                    <option value="@category.Id" selected>@category.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@category.Id">@category.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="cus-text-label" for="ShortDesc">Short Description</label>
+                        <textarea class="form-control" name="ShortDesc" id="SummernoteShortDesc">@Model.ShortDesc</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="cus-text-label" for="SummernoteContent">Content</label>
+                        <textarea class="form-control" name="Content" id="SummernoteContent">@Model.Content</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="cus-text-label" for="TagsSelect">Tag</label>
+                        <select id="TagsSelect" class="form-control select2 select2-hidden-accessible" name="Tags" multiple="" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                            @foreach (var tag in Tags)
+                            {
+                                if (tag.Selected == true)
+                                {
+                                    <option value="@tag.Id" selected>@tag.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@tag.Id">@tag.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="cus-text-label" for="SeoMeta">Seo Meta</label>
+                        <textarea class="form-control" name="SeoMeta" id="SummernoteSeoMeta">@Model.SeoMeta</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="cus-text-label" for="ImageFeature">Image Feature</label>
+                        <input class="form-control form-control-lg" name="ImageFeature" id="ImageFeature" type="file" />
+
+                        @*<img src="/img/image-deafult.png" alt="Demo" id="ShowImageFeature" class="img-thumbnail mt-2 cus-image-featurer">*@
+                        <img src="@Model.ImageFeature" alt="null" id="ShowImageFeature" class="img-thumbnail mt-2 cus-image-featurer">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--End Form Create Post -->
+    <!--Form for additional create tag,category -->
+    <div class="col-lg-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Create New Category</h6>
+            </div>
+            <div class="card-body">
+                <form class="">
+                    <input type="hidden" id="CategoryId" value="" />
+                    <div class="form-group">
+                        <label class="cus-text-label">Parent Id</label>
+                        <input name="ParentId" id="ParentId" value="" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="cus-text-label">Category Name</label>
+                        <input name="CategoryName" id="CategoryName" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="cus-text-label">Seo Meta</label>
+                        <input name="SeoMeta" id="SeoMetaCategory" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="button" id="btnSubmitCategory" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Create New Tag</h6>
+            </div>
+            <div class="card-body">
+                <form class="">
+                    <input type="hidden" id="TagId" value="" />
+                    <div class="form-group">
+                        <label class="cus-text-label">Tag Name</label>
+                        <input name="TagName" id="TagName" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="cus-text-label">Seo Meta</label>
+                        <input name="SeoMeta" id="SeoMetaTag" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="button" id="btnSubmitTag" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--End Form for additional create tag,category -->
+</div>

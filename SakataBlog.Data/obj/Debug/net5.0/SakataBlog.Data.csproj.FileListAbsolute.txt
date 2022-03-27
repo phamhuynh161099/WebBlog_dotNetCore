@@ -1,0 +1,15 @@
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Data\bin\Debug\net5.0\SakataBlog.Data.deps.json
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Data\bin\Debug\net5.0\SakataBlog.Data.runtimeconfig.json
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Data\bin\Debug\net5.0\SakataBlog.Data.runtimeconfig.dev.json
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Data\bin\Debug\net5.0\SakataBlog.Data.dll
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Data\bin\Debug\net5.0\ref\SakataBlog.Data.dll
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Data\bin\Debug\net5.0\SakataBlog.Data.pdb
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Data\obj\Debug\net5.0\SakataBlog.Data.csproj.AssemblyReference.cache
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Data\obj\Debug\net5.0\SakataBlog.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Data\obj\Debug\net5.0\SakataBlog.Data.AssemblyInfoInputs.cache
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Data\obj\Debug\net5.0\SakataBlog.Data.AssemblyInfo.cs
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Data\obj\Debug\net5.0\SakataBlog.Data.csproj.CoreCompileInputs.cache
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Data\obj\Debug\net5.0\SakataBlog.Data.dll
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Data\obj\Debug\net5.0\ref\SakataBlog.Data.dll
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Data\obj\Debug\net5.0\SakataBlog.Data.pdb
+C:\Users\ASUS\Desktop\Website-Blog\SakataBlog.Solution\SakataBlog.Data\obj\Debug\net5.0\SakataBlog.Data.genruntimeconfig.cache
